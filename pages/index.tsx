@@ -49,8 +49,7 @@ const Index: NextPage = () => {
 
     if (!ctx) return;
 
-    console.log("?");
-
+    ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
     ctx.drawImage(imageRef.current, 0, 0);
 
     const imageData = ctx.getImageData(
@@ -60,8 +59,6 @@ const Index: NextPage = () => {
       canvasRef.current.height
     );
     const length = imageData.data.length;
-
-    console.log(length);
 
     for (let i = 0; i < length; i += 4) {
       const count =
@@ -86,7 +83,6 @@ const Index: NextPage = () => {
     }
 
     ctx.putImageData(imageData, 0, 0);
-    console.log("!");
   };
 
   const download = () => {
