@@ -20,6 +20,7 @@ const Index: NextPage = () => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const imageRef = useRef<HTMLImageElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const aRef = useRef<HTMLAnchorElement | null>(null);
 
   const fileHandler = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
@@ -88,6 +89,13 @@ const Index: NextPage = () => {
     console.log("!");
   };
 
+  const download = () => {
+    if (!aRef.current || !canvasRef.current) return;
+
+    aRef.current.href = canvasRef.current.toDataURL("image/png");
+    aRef.current.click();
+  };
+
   return (
     <Wrap>
       <Container>
@@ -95,13 +103,6 @@ const Index: NextPage = () => {
           <Button onClick={() => fileInputRef.current?.click()}>
             + 이미지
           </Button>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={fileHandler}
-            ref={fileInputRef}
-            style={{ display: "none" }}
-          />
         </ButtonWrapTop>
         {image ? (
           <ImageWrap>
@@ -150,10 +151,25 @@ const Index: NextPage = () => {
             <Button disabled={isImageLoading} onClick={convert}>
               변환
             </Button>
-            <Button disabled={isImageLoading}>저장</Button>
+            <Button disabled={isImageLoading} onClick={download}>
+              저장
+            </Button>
           </ButtonWrap>
         </Control>
       </Container>
+      <input
+        type="file"
+        accept="image/*"
+        onChange={fileHandler}
+        ref={fileInputRef}
+        style={{ display: "none" }}
+      />
+      <a
+        style={{ display: "none" }}
+        download="converted.png"
+        href=""
+        ref={aRef}
+      />
     </Wrap>
   );
 };
